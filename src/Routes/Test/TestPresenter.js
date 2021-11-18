@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Slider} from "antd"
 const ExercisePresenter = (props) => {
   return (
     <div style={{ background: "skyblue", height: "97vh" }}>

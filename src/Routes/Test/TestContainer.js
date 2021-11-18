@@ -37,12 +37,14 @@ export default class extends React.Component {
   }
   DrawMap = () => {
     axios
-      .get("/products/" + this.state.bus)
+      .get("/products/"+ this.state.bus)
       .then((res) => {
         var data;
         data = res.data["products"];
-
-        console.log(data);
+        console.log("aa")
+        for(var i=0;i<3000;i++){
+          console.log(data[i].BUS_ARS_NO);
+        }
         var a = "red";
         if (this.state.bus === "301") {
           a = "blue";
