@@ -3,6 +3,10 @@ import React from "react";
 import TestPresenter from "./TestPresenter";
 import axios from "axios";
 var map;
+var customOverlay = new kakao.maps.CustomOverlay({});
+var circles = [];
+var infowindow = new kakao.maps.InfoWindow({ removable: true });
+var size = { 301: [0, 49, 99], 401: [0, 49, 98], 3011: [0, 44, 87] };
 // eslint-disable-next-line
 export default class extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ export default class extends React.Component {
       date: "ALL", //weekday: 주중, weekend: 주말, holiday: 공휴일, ALL: 전체
       onoff: "ALL", // ALL: 전체, TBR: 승차, TBA: 하차
       route: "ALL", // ALL: 전체, ASC: 상행, DESC: 하행
+      time: [4, 28],
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -23,7 +28,6 @@ export default class extends React.Component {
     ) {
       this.DrawMap();
     }
-    console.log(this.state);
   }
   componentDidMount() {
     console.log("didmount");
@@ -34,65 +38,151 @@ export default class extends React.Component {
     };
     // eslint-disable-next-line
     map = new kakao.maps.Map(container, options);
+    this.DrawMap();
   }
   DrawMap = () => {
     axios
-      .get("/products/"+ this.state.bus)
+      .get(
+        "/products/" +
+          this.state.bus +
+          "/" +
+          this.state.date +
+          "/" +
+          this.state.onoff +
+          "/" +
+          this.state.route
+      )
       .then((res) => {
+        while (circles.length !== 0) {
+          circles.pop().setMap(null);
+        }
+
         var data;
         data = res.data["products"];
-        console.log("aa")
-        for(var i=0;i<3000;i++){
-          console.log(data[i].BUS_ARS_NO);
-        }
-        var a = "red";
-        if (this.state.bus === "301") {
-          a = "blue";
-        } else if (this.state.bus === "401") {
-          a = "green";
-        } else {
-          a = "orange";
-        }
-        var circle = new kakao.maps.Circle({
-          center: new kakao.maps.LatLng(37.541, 126.986), // 원의 중심좌표 입니다
-          radius: 500, // 미터 단위의 원의 반지름입니다
-          strokeWeight: 5, // 선의 두께입니다
-          strokeColor: "#75B8FA", // 선의 색깔입니다
-          strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: "dashed", // 선의 스타일 입니다
-          fillColor: a, //"#CFE7FF", // 채우기 색깔입니다
-          fillOpacity: 1, // 채우기 불투명도 입니다
-        });
+        // console.log(data);
 
-        circle.setMap(map);
+        var on = size[this.state.bus][0];
+        var off = size[this.state.bus][2];
+
+        if (this.state.route === "ASC") {
+          off = size[this.state.bus][1];
+        } else if (this.state.route === "DESC") {
+          on = size[this.state.bus][1] + 1;
+        }
+
+        for (var i = on; i <= off; i++) {
+          this.DrawCircle(data[i]);
+        }
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  getBus = (e) => {
+  DrawCircle = (data) => {
+    var t = this.state.time;
+    var tbrSum = 0;
+    var tbaSum = 0;
+    for (var i = t[0]; i < t[1]; i++) {
+      var temp = i;
+      if (temp > 23) {
+        temp -= 24;
+      }
+      tbrSum += data["TBR" + temp];
+      tbaSum += data["TBA" + temp];
+    }
+    var circleSize = tbrSum;
+    if (this.state.onoff === "TBA") {
+      circleSize = tbaSum;
+    } else if (this.state.onoff === "ALL") {
+      circleSize = tbrSum + tbaSum;
+    }
+    circleSize = circleSize * 2 + 10;
+    var circle = new kakao.maps.Circle({
+      center: new kakao.maps.LatLng(data["LOC_X"], data["LOC_Y"]), // 원의 중심좌표 입니다
+      radius: circleSize, // 미터 단위의 원의 반지름입니다
+      strokeWeight: 5, // 선의 두께입니다
+      strokeColor: "#75B8FA", // 선의 색깔입니다
+      strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+      strokeStyle: "dashed", // 선의 스타일 입니다
+      fillColor: "red", // 채우기 색깔입니다
+      fillOpacity: 0.5, // 채우기 불투명도 입니다
+    });
+    var text1 = "하행";
+
+    if (data.SEQ <= size[this.state.bus][1] + 1) {
+      text1 = "상행";
+    }
+    kakao.maps.event.addListener(circle, "mouseover", function (mouseEvent) {
+      circle.setOptions({ fillColor: "blue" });
+      // customOverlay.setContent(
+      //   '<div style="background: white;font-size:10px;padding:5px;border-radius: 5px;font-weight:bold">' +
+      //     data.BUS_BSST_NM +
+      //     "</div>"
+      // );
+      // customOverlay.setPosition(mouseEvent.latLng);
+      customOverlay.setMap(map);
+    });
+    // kakao.maps.event.addListener(circle, "mousemove", function (mouseEvent) {
+    //   console.log(mouseEvent);
+
+    //   customOverlay.setPosition(mouseEvent.latLng);
+    // });
+    kakao.maps.event.addListener(circle, "mouseout", function () {
+      circle.setOptions({ fillColor: "red" });
+      customOverlay.setMap(null);
+    });
+    kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
+      var content =
+        "<div > 정류장 번호: " +
+        data.BUS_ARS_NO +
+        "<br>정류장 이름: " +
+        data.BUS_BSST_NM +
+        "<br>(평균 치) 전체 인원: " +
+        (tbaSum + tbrSum) +
+        "<br>(평균 치) 승차 인원: " +
+        tbrSum +
+        "<br>(평균 치) 하차 인원: " +
+        tbaSum +
+        "<br>" +
+        text1 +
+        "</div>";
+      infowindow.setContent(content);
+      infowindow.setPosition(mouseEvent.latLng);
+      infowindow.setMap(map);
+    });
+
+    circle.setMap(map);
+    circles.push(circle);
+  };
+  getBus = () => {
     return this.state.bus;
   };
   setBus = (e) => {
     this.setState({ bus: e.target.value });
   };
-  getDate = (e) => {
+  getDate = () => {
     return this.state.date;
   };
   setDate = (e) => {
     this.setState({ date: e.target.value });
   };
-  getOnoff = (e) => {
+  getOnoff = () => {
     return this.state.onoff;
   };
   setOnoff = (e) => {
     this.setState({ onoff: e.target.value });
   };
-  getRoute = (e) => {
+  getRoute = () => {
     return this.state.route;
   };
   setRoute = (e) => {
     this.setState({ route: e.target.value });
+  };
+  getTime = () => {
+    return this.state.time;
+  };
+  setTime = (newValue) => {
+    this.setState({ time: newValue });
   };
   render() {
     const { data } = this.state; //변수
@@ -101,10 +191,12 @@ export default class extends React.Component {
       getDate,
       getRoute,
       getOnoff,
+      getTime,
       setBus,
       setDate,
       setOnoff,
       setRoute,
+      setTime,
     } = this; //함수
     return (
       <TestPresenter
@@ -116,6 +208,8 @@ export default class extends React.Component {
         setDate={setDate}
         setRoute={setRoute}
         setOnoff={setOnoff}
+        setTime={setTime}
+        getTime={getTime}
         data={data}
       />
     );
