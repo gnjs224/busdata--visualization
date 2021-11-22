@@ -2,7 +2,6 @@
 import React from "react";
 import TestPresenter from "./TestPresenter";
 import axios from "axios";
-import { textAlign } from "@mui/system";
 var map;
 var customOverlay = new kakao.maps.CustomOverlay({});
 var circles = [];
