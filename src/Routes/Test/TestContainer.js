@@ -2,6 +2,7 @@
 import React from "react";
 import TestPresenter from "./TestPresenter";
 import axios from "axios";
+import { textAlign } from "@mui/system";
 var map;
 var customOverlay = new kakao.maps.CustomOverlay({});
 var circles = [];
@@ -90,6 +91,8 @@ export default class extends React.Component {
       tbrSum += data["TBR" + temp];
       tbaSum += data["TBA" + temp];
     }
+    tbrSum = Math.round(tbrSum);
+    tbaSum = Math.round(tbaSum);
     var circleSize = tbrSum;
     if (this.state.onoff === "TBA") {
       circleSize = tbaSum;
@@ -97,23 +100,27 @@ export default class extends React.Component {
       circleSize = tbrSum + tbaSum;
     }
     circleSize = circleSize * 2 + 10;
+    var circleColor = "red";
+    var hoverColor = "#fa752d";
+    var text1 = "상행";
+    if (data["SEQ"] > size[this.state.bus][1] + 1) {
+      circleColor = "blue";
+      hoverColor = "#2d8dfa";
+      text1 = "하행";
+    }
     var circle = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(data["LOC_X"], data["LOC_Y"]), // 원의 중심좌표 입니다
       radius: circleSize, // 미터 단위의 원의 반지름입니다
-      strokeWeight: 5, // 선의 두께입니다
-      strokeColor: "#75B8FA", // 선의 색깔입니다
-      strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      strokeStyle: "dashed", // 선의 스타일 입니다
-      fillColor: "red", // 채우기 색깔입니다
-      fillOpacity: 0.5, // 채우기 불투명도 입니다
+      strokeWeight: 1, // 선의 두께입니다
+      strokeColor: "white", // 선의 색깔입니다
+      strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+      strokeStyle: "solid", // 선의 스타일 입니다
+      fillColor: circleColor, // 채우기 색깔입니다
+      fillOpacity: 0.7, // 채우기 불투명도 입니다
     });
-    var text1 = "하행";
 
-    if (data.SEQ <= size[this.state.bus][1] + 1) {
-      text1 = "상행";
-    }
     kakao.maps.event.addListener(circle, "mouseover", function (mouseEvent) {
-      circle.setOptions({ fillColor: "blue" });
+      circle.setOptions({ fillColor: hoverColor });
       // customOverlay.setContent(
       //   '<div style="background: white;font-size:10px;padding:5px;border-radius: 5px;font-weight:bold">' +
       //     data.BUS_BSST_NM +
@@ -128,20 +135,20 @@ export default class extends React.Component {
     //   customOverlay.setPosition(mouseEvent.latLng);
     // });
     kakao.maps.event.addListener(circle, "mouseout", function () {
-      circle.setOptions({ fillColor: "red" });
+      circle.setOptions({ fillColor: circleColor });
       customOverlay.setMap(null);
     });
     kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
       var content =
-        "<div > 정류장 번호: " +
+        "<div style='text-align: left; width: 130%; padding:10px;'> 정류장 번호: " +
         data.BUS_ARS_NO +
         "<br>정류장 이름: " +
         data.BUS_BSST_NM +
-        "<br>(평균 치) 전체 인원: " +
+        "<br> 전체 인원: " +
         (tbaSum + tbrSum) +
-        "<br>(평균 치) 승차 인원: " +
+        "<br> 승차 인원: " +
         tbrSum +
-        "<br>(평균 치) 하차 인원: " +
+        "<br> 하차 인원: " +
         tbaSum +
         "<br>" +
         text1 +
