@@ -3,7 +3,6 @@ import React from "react";
 import TestPresenter from "./TestPresenter";
 import axios from "axios";
 var map;
-var customOverlay = new kakao.maps.CustomOverlay({});
 var circles = [];
 var infowindow = new kakao.maps.InfoWindow({ removable: true });
 var size = { 301: [0, 49, 99], 401: [0, 49, 98], 3011: [0, 44, 87] };
@@ -120,22 +119,9 @@ export default class extends React.Component {
 
     kakao.maps.event.addListener(circle, "mouseover", function (mouseEvent) {
       circle.setOptions({ fillColor: hoverColor });
-      // customOverlay.setContent(
-      //   '<div style="background: white;font-size:10px;padding:5px;border-radius: 5px;font-weight:bold">' +
-      //     data.BUS_BSST_NM +
-      //     "</div>"
-      // );
-      // customOverlay.setPosition(mouseEvent.latLng);
-      customOverlay.setMap(map);
     });
-    // kakao.maps.event.addListener(circle, "mousemove", function (mouseEvent) {
-    //   console.log(mouseEvent);
-
-    //   customOverlay.setPosition(mouseEvent.latLng);
-    // });
     kakao.maps.event.addListener(circle, "mouseout", function () {
       circle.setOptions({ fillColor: circleColor });
-      customOverlay.setMap(null);
     });
     kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
       var content =

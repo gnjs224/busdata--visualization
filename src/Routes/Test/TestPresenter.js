@@ -39,7 +39,7 @@ const TimeSlider = (props) => {
     </div>
   );
 };
-const ExercisePresenter = (props) => {
+const TestPresenter = (props) => {
   return (
     <div style={{ height: "97vh", textAlign: "center" }}>
       <div id="map" style={{ width: "100%", height: "90%" }}></div>
@@ -109,4 +109,4 @@ const ExercisePresenter = (props) => {
     </div>
   );
 };
-export default ExercisePresenter;
+export default TestPresenter;
