@@ -163,7 +163,7 @@ export default class extends React.Component {
       var circleOverlay = new kakao.maps.CustomOverlay({
         content: '<span class="dot"></span>',
         position: position,
-        zIndex: 1,
+        zIndex: -1,
       });
 
       // 지도에 표시합니다
@@ -178,7 +178,7 @@ export default class extends React.Component {
             "</span>m</div>",
           position: position,
           yAnchor: 1,
-          zIndex: 2,
+          zIndex: -1,
         });
 
         // 지도에 표시합니다
@@ -285,7 +285,7 @@ export default class extends React.Component {
     });
     kakao.maps.event.addListener(c, "click", function (mouseEvent) {
       var content =
-        "<div style='text-align: left; width: 130%; padding:10px;'> 구분: " +
+        "<div class = 'window'> 구분: " +
         (stnId.length === 4 ? "지하철" : "버스") +
         "<br>정류장 번호: " +
         arsNo +

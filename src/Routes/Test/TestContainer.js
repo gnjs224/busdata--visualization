@@ -59,14 +59,18 @@ export default class extends React.Component {
         var data;
         data = res.data["products"];
         // console.log(data);
-
-        var on = size[this.state.bus][0];
-        var off = size[this.state.bus][2];
-
-        if (this.state.route === "ASC") {
-          off = size[this.state.bus][1];
-        } else if (this.state.route === "DESC") {
-          on = size[this.state.bus][1] + 1;
+        var on =
+          size[this.state.bus] === undefined ? 0 : size[this.state.bus][0];
+        var off =
+          size[this.state.bus] === undefined
+            ? data.length - 1
+            : size[this.state.bus][2];
+        if (this.state.bus != null) {
+          if (this.state.route === "ASC") {
+            off = size[this.state.bus][1];
+          } else if (this.state.route === "DESC") {
+            on = size[this.state.bus][1] + 1;
+          }
         }
 
         for (var i = on; i <= off; i++) {
@@ -101,7 +105,11 @@ export default class extends React.Component {
     var circleColor = "red";
     var hoverColor = "#fa752d";
     var text1 = "상행";
-    if (data["SEQ"] > size[this.state.bus][1] + 1) {
+    if (size[this.state.bus] === undefined) {
+      circleColor = "green";
+      hoverColor = "lightgreen";
+      text1 = "";
+    } else if (data["SEQ"] > size[this.state.bus][1] + 1) {
       circleColor = "blue";
       hoverColor = "#2d8dfa";
       text1 = "하행";

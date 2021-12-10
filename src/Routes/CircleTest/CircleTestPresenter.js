@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Header from "../../Components/Header";
 const Log = styled.div`
   text-align: left;
   cursor: pointer;
@@ -54,6 +55,9 @@ const List = (props) => {
 const CircleTestPresenter = (props) => {
   return (
     <>
+      <Header type={2} />
+      <br />
+      <br />
       <div style={{ textAlign: "center", marginBottom: "10px" }}>
         <span style={{ fontSize: "13px" }}>검색어: </span>
         <input
@@ -65,7 +69,7 @@ const CircleTestPresenter = (props) => {
           style={{ marginLeft: "3px" }}
         ></input>
       </div>
-      <div style={{ height: "91vh", textAlign: "center" }}>
+      <div style={{ height: "85.5vh", textAlign: "center" }}>
         <div style={{ width: "30%", height: "90%", float: "left" }}>
           <div style={{ overflow: "scroll", height: "100%" }}>
             <div>
