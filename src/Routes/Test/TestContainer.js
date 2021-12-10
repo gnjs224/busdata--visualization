@@ -65,7 +65,8 @@ export default class extends React.Component {
           size[this.state.bus] === undefined
             ? data.length - 1
             : size[this.state.bus][2];
-        if (this.state.bus != null) {
+        if (size[this.state.bus] !== undefined) {
+          console.log(this.state.bus);
           if (this.state.route === "ASC") {
             off = size[this.state.bus][1];
           } else if (this.state.route === "DESC") {
