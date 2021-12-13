@@ -9,6 +9,8 @@ const Log = styled.div`
   }
 `;
 const List = (props) => {
+  //보자
+  console.log(props);
   const getList = (type) => {
     const result = [];
     var target = null;
@@ -70,7 +72,7 @@ const CircleTestPresenter = (props) => {
         ></input>
       </div>
       <div style={{ height: "85.5vh", textAlign: "center" }}>
-        <div style={{ width: "30%", height: "90%", float: "left" }}>
+        <div style={{ width: "30%", height: "97%", float: "left" }}>
           <div style={{ overflow: "scroll", height: "100%" }}>
             <div>
               <List
@@ -83,7 +85,7 @@ const CircleTestPresenter = (props) => {
             </div>
           </div>
         </div>
-        <div id="map" style={{ width: "70%", height: "90%" }}></div>
+        <div id="map" style={{ width: "70%", height: "97%" }}></div>
         <div style={{ marginTop: "15px", height: "10%" }}>
           잠재 고객: {props.sum}명
         </div>

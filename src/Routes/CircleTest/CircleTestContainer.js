@@ -209,10 +209,10 @@ export default class extends React.Component {
         center: center, // 원의 중심좌표 입니다
         radius: distance, // 미터 단위의 원의 반지름입니다
         strokeWeight: 3, // 선의 두께입니다
-        strokeColor: "#75B8FA", // 선의 색깔입니다
+        strokeColor: "green", //"#75B8FA", // 선의 색깔입니다
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: "solid", // 선의 스타일 입니다
-        fillColor: "#CFE7FF", // 채우기 색깔입니다
+        fillColor: "lightgreen", //"#CFE7FF", // 채우기 색깔입니다
         fillOpacity: 0.6, // 채우기 불투명도 입니다
       });
       circle.setMap(map);
