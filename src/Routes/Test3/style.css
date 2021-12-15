@@ -4,6 +4,9 @@
   padding: 10px;
   z-index: 1;
 }
+.title {
+  font-weight: bold;
+}
 .dot {
   overflow: hidden;
   float: left;

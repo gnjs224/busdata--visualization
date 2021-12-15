@@ -9,8 +9,6 @@ const Log = styled.div`
   }
 `;
 const List = (props) => {
-  //보자
-  console.log(props);
   const getList = (type) => {
     const result = [];
     var target = null;
@@ -42,7 +40,6 @@ const List = (props) => {
             ")"}
         </Log>
       );
-      // result.push(<span key={i}>{weekArr[i] + " / "}</span>);
     }
     return result;
   };
@@ -54,7 +51,7 @@ const List = (props) => {
     </div>
   );
 };
-const CircleTestPresenter = (props) => {
+const Test2Presenter = (props) => {
   return (
     <>
       <Header type={2} />
@@ -70,6 +67,9 @@ const CircleTestPresenter = (props) => {
           }}
           style={{ marginLeft: "3px" }}
         ></input>
+        <div style={{ margin: "15px", height: "10%", fontSize: "20px" }}>
+          잠재 고객: {props.sum.toLocaleString("ko-KR")}명
+        </div>
       </div>
       <div style={{ height: "85.5vh", textAlign: "center" }}>
         <div style={{ width: "30%", height: "97%", float: "left" }}>
@@ -86,11 +86,8 @@ const CircleTestPresenter = (props) => {
           </div>
         </div>
         <div id="map" style={{ width: "70%", height: "97%" }}></div>
-        <div style={{ marginTop: "15px", height: "10%" }}>
-          잠재 고객: {props.sum}명
-        </div>
       </div>
     </>
   );
 };
-export default CircleTestPresenter;
+export default Test2Presenter;

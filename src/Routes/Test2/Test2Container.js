@@ -1,6 +1,6 @@
 /*global kakao*/
 import React from "react";
-import CircleTestPresenter from "./CircleTestPresenter";
+import Test2Presenter from "./Test2Presenter";
 import "./style.css";
 import axios from "axios";
 var map;
@@ -108,7 +108,7 @@ export default class extends React.Component {
         var distance = Math.round(clickLine.getLength() + moveLine.getLength()), // 선의 총 거리를 계산합니다
           content =
             '<div class="dotOverlay distanceInfo">거리 <span class="number">' +
-            distance +
+            distance.toLocaleString("ko-KR") +
             "</span>m</div>"; // 커스텀오버레이에 추가될 내용입니다
 
         // 거리정보를 지도에 표시합니다
@@ -174,7 +174,7 @@ export default class extends React.Component {
         var distanceOverlay = new kakao.maps.CustomOverlay({
           content:
             '<div class="dotOverlay">거리 <span class="number">' +
-            distance +
+            distance.toLocaleString("ko-KR") +
             "</span>m</div>",
           position: position,
           yAnchor: 1,
@@ -205,18 +205,6 @@ export default class extends React.Component {
       dots = [];
     }
     const drawCircle = (center, distance) => {
-      var circle = new kakao.maps.Circle({
-        center: center, // 원의 중심좌표 입니다
-        radius: distance, // 미터 단위의 원의 반지름입니다
-        strokeWeight: 3, // 선의 두께입니다
-        strokeColor: "green", //"#75B8FA", // 선의 색깔입니다
-        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: "solid", // 선의 스타일 입니다
-        fillColor: "lightgreen", //"#CFE7FF", // 채우기 색깔입니다
-        fillOpacity: 0.6, // 채우기 불투명도 입니다
-      });
-      circle.setMap(map);
-      circles.push(circle);
       axios
         .get("/around/" + center["Ma"] + "/" + center["La"] + "/" + distance)
         .then((res) => {
@@ -251,7 +239,42 @@ export default class extends React.Component {
               });
             }
           }
+          var circle = new kakao.maps.Circle({
+            center: center, // 원의 중심좌표 입니다
+            radius: distance, // 미터 단위의 원의 반지름입니다
+            strokeWeight: 3, // 선의 두께입니다
+            strokeColor: "green", //"#75B8FA", // 선의 색깔입니다
+            strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: "solid", // 선의 스타일 입니다
+            fillColor: "lightgreen", //"#CFE7FF", // 채우기 색깔입니다
+            fillOpacity: 0.6, // 채우기 불투명도 입니다
+          });
+          kakao.maps.event.addListener(circle, "mouseover", function () {
+            circle.setOptions({ fillColor: "green" });
+          });
+          kakao.maps.event.addListener(circle, "mouseout", function () {
+            circle.setOptions({ fillColor: "lightgreen" });
+          });
+          kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
+            var content =
+              "<div class = 'window'><span class = 'title'> 주거 정류장 수</span> <br>지하철: " +
+              subway.length +
+              "<br>버스: " +
+              bus.length +
+              "<br><br> <span class = 'title'> 잠재고객 수 </span><br>" +
+              sum.toLocaleString("ko-KR") +
+              "</div>";
+            infowindow.setContent(content);
+            if (mouseEvent === "trigger") {
+              infowindow.setPosition(circle.getPosition());
+            } else {
+              infowindow.setPosition(mouseEvent.latLng);
+            }
+            infowindow.setMap(map);
+          });
 
+          circle.setMap(map);
+          circles.push(circle);
           bus.sort(function (a, b) {
             return b["pCount"] - a["pCount"];
           });
@@ -266,22 +289,23 @@ export default class extends React.Component {
         });
     };
   }
+  //#CBC3E3
   addCircle = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
       radius: pCount / 10, // 미터 단위의 원의 반지름입니다
       strokeWeight: 1, // 선의 두께입니다
-      strokeColor: "blue", // 선의 색깔입니다
+      strokeColor: "purple", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
-      fillColor: "skyblue", // 채우기 색깔입니다
+      fillColor: "purple", // 채우기 색깔입니다
       fillOpacity: 0.7, // 채우기 불투명도 입니다
     });
     kakao.maps.event.addListener(c, "mouseover", function () {
-      c.setOptions({ fillColor: "blue" });
+      c.setOptions({ fillColor: "#CBC3E3" });
     });
     kakao.maps.event.addListener(c, "mouseout", function () {
-      c.setOptions({ fillColor: "skyblue" });
+      c.setOptions({ fillColor: "purple" });
     });
     kakao.maps.event.addListener(c, "click", function (mouseEvent) {
       var content =
@@ -292,7 +316,7 @@ export default class extends React.Component {
         "<br>정류장 이름: " +
         stnNm +
         "<br> 인구: " +
-        pCount +
+        pCount.toLocaleString("ko-KR") +
         "</div>";
       infowindow.setContent(content);
       if (mouseEvent === "trigger") {
@@ -364,7 +388,7 @@ export default class extends React.Component {
   render() {
     const { subway, bus, sum } = this.state;
     return (
-      <CircleTestPresenter
+      <Test2Presenter
         setMap={this.setMap}
         subway={subway}
         bus={bus}
