@@ -48,6 +48,7 @@ const TestPresenter = (props) => {
       <div style={{ height: "91vh", textAlign: "center" }}>
         <div style={{ marginTop: "50px", marginBottom: "10px" }}>
           <TimeSlider setTime={props.setTime} getTime={props.getTime} />
+          <Key>BUS:</Key>
           <span class="bus" onChange={props.setBus}>
             <input
               type="radio"
@@ -72,7 +73,6 @@ const TestPresenter = (props) => {
             <input type="radio" id="temp5" name="bus" value="temp5" />
             <label for="temp5">노선5</label>
           </span>
-          <Key>BUS:</Key>
 
           <span class="date" onChange={props.setDate}>
             <Key>WEEK:</Key>
