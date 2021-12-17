@@ -11,27 +11,39 @@ const Menu = styled.div`
   padding: 2px 50px 5px 50px;
 `;
 const Header = (props) => {
-  var test1 = "gray";
-  var test2 = "gray";
-  var test3 = "gray";
+  var firstColor = "gray";
+  var secondColor = "gray";
+  var thirdcolor = "gray";
+  var firstWeight = "initial";
+  var secondWeight = "initial";
+  var thirdWeight = "initial";
   if (props.type === 1) {
-    test1 = "black";
+    firstColor = "black";
+    firstWeight = "bold";
   } else if (props.type === 2) {
-    test2 = "black";
+    secondColor = "black";
+    secondWeight = "bold";
   } else {
-    test3 = "black";
+    thirdcolor = "black";
+    thirdWeight = "bold";
   }
   return (
     <>
       <div>
         <Link to="/">
-          <Menu style={{ color: test1 }}>test1</Menu>
+          <Menu style={{ color: firstColor, fontWeight: firstWeight }}>
+            노선 분석
+          </Menu>
         </Link>
         <Link to="/test2">
-          <Menu style={{ color: test2 }}>test2</Menu>
+          <Menu style={{ color: secondColor, fontWeight: secondWeight }}>
+            지역 분석
+          </Menu>
         </Link>
         <Link to="/test3">
-          <Menu style={{ color: test3 }}> test3</Menu>
+          <Menu style={{ color: thirdcolor, fontWeight: thirdWeight }}>
+            노선별 지역 분석
+          </Menu>
         </Link>
       </div>
     </>

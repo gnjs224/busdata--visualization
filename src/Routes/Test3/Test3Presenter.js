@@ -80,7 +80,7 @@ const Test3Presenter = (props) => {
       <div style={{ height: "85.5vh", textAlign: "center" }}>
         <div>
           <div>
-            <span style={{ fontSize: "13px" }}>반지름: </span>
+            <span style={{ fontSize: "13px" }}>반지름(m): </span>
             <input
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
@@ -117,7 +117,7 @@ const Test3Presenter = (props) => {
             <div>잠재 고객: {props.sum.toLocaleString("ko-KR")}명</div>
           </div>
         </div>
-        <div style={{ width: "30%", height: "95%", float: "left" }}>
+        <div style={{ width: "20%", height: "95%", float: "left" }}>
           <div style={{ overflow: "scroll", height: "100%" }}>
             <div>
               {console.log("start")}
@@ -134,7 +134,7 @@ const Test3Presenter = (props) => {
           </div>
         </div>
 
-        <div id="map" style={{ width: "70%", height: "95%" }}></div>
+        <div id="map" style={{ width: "80%", height: "95%" }}></div>
       </div>
     </>
   );

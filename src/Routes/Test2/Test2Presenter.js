@@ -34,8 +34,8 @@ const List = (props) => {
           onMouseOut={props.listOut}
         >
           {target[i]["stnNm"] +
-            "(" +
             (type === "subway" ? "역" : "") +
+            "(" +
             target[i]["arsNo"] +
             ")"}
         </Log>
@@ -72,7 +72,7 @@ const Test2Presenter = (props) => {
         </div>
       </div>
       <div style={{ height: "85.5vh", textAlign: "center" }}>
-        <div style={{ width: "30%", height: "97%", float: "left" }}>
+        <div style={{ width: "20%", height: "97%", float: "left" }}>
           <div style={{ overflow: "scroll", height: "100%" }}>
             <div>
               <List
@@ -85,7 +85,7 @@ const Test2Presenter = (props) => {
             </div>
           </div>
         </div>
-        <div id="map" style={{ width: "70%", height: "97%" }}></div>
+        <div id="map" style={{ width: "80%", height: "97%" }}></div>
       </div>
     </>
   );
