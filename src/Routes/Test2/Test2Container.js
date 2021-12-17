@@ -248,6 +248,7 @@ export default class extends React.Component {
             strokeStyle: "solid", // 선의 스타일 입니다
             fillColor: "lightgreen", //"#CFE7FF", // 채우기 색깔입니다
             fillOpacity: 0.6, // 채우기 불투명도 입니다
+            zIndex: 0,
           });
           kakao.maps.event.addListener(circle, "mouseover", function () {
             circle.setOptions({ fillColor: "green" });
@@ -293,19 +294,20 @@ export default class extends React.Component {
   addCircle = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 10, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 20, // 미터 단위의 원의 반지름입니다
       strokeWeight: 1, // 선의 두께입니다
       strokeColor: "purple", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
       fillColor: "purple", // 채우기 색깔입니다
-      fillOpacity: 0.7, // 채우기 불투명도 입니다
+      fillOpacity: 0.1, // 채우기 불투명도 입니다
+      zIndex: 1 / pCount,
     });
     kakao.maps.event.addListener(c, "mouseover", function () {
-      c.setOptions({ fillColor: "#CBC3E3" });
+      c.setOptions({ fillOpacity: 0.5 });
     });
     kakao.maps.event.addListener(c, "mouseout", function () {
-      c.setOptions({ fillColor: "purple" });
+      c.setOptions({ fillOpacity: 0.1 });
     });
     kakao.maps.event.addListener(c, "click", function (mouseEvent) {
       var content =

@@ -42,6 +42,7 @@ const HomeList = (props) => {
   return <div>{result}</div>;
 };
 const getList = (type, small, props, key) => {
+  console.log(type);
   var result = [];
   var target = Object.values(small)[0];
   if (target.length === 0) {
@@ -59,8 +60,8 @@ const getList = (type, small, props, key) => {
         onMouseOut={props.listEventHandler}
       >
         {target[i]["stnNm"] +
-          "(" +
           (type === "subway" ? "역" : "") +
+          "(" +
           target[i]["arsNo"] +
           ")"}
       </Log>

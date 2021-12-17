@@ -142,15 +142,16 @@ export default class extends React.Component {
       strokeColor: circleColor, // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
-      fillColor: fillColor, // 채우기 색깔입니다
-      fillOpacity: 0.6, // 채우기 불투명도 입니다
+      fillColor: circleColor, // 채우기 색깔입니다
+      fillOpacity: 0.2, // 채우기 불투명도 입니다
+      zIndex: 0,
     });
 
     kakao.maps.event.addListener(circle, "mouseover", function () {
-      circle.setOptions({ fillColor: circleColor });
+      circle.setOptions({ fillOpacity: 0.7 });
     });
     kakao.maps.event.addListener(circle, "mouseout", function () {
-      circle.setOptions({ fillColor: fillColor });
+      circle.setOptions({ fillOpacity: 0.2 });
     });
     kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
       var content =
@@ -178,19 +179,20 @@ export default class extends React.Component {
   addSmall = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 10, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 20, // 미터 단위의 원의 반지름입니다
       strokeWeight: 1, // 선의 두께입니다
       strokeColor: "purple", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
       fillColor: "purple", // 채우기 색깔입니다
-      fillOpacity: 0.7, // 채우기 불투명도 입니다
+      fillOpacity: 0.1, // 채우기 불투명도 입니다
+      zIndex: 1 / pCount,
     });
     kakao.maps.event.addListener(c, "mouseover", function () {
-      c.setOptions({ fillColor: "#CBC3E3" });
+      c.setOptions({ fillOpacity: 0.7 });
     });
     kakao.maps.event.addListener(c, "mouseout", function () {
-      c.setOptions({ fillColor: "purple" });
+      c.setOptions({ fillOpacity: 0.1 });
     });
     kakao.maps.event.addListener(c, "click", function (mouseEvent) {
       var content =
@@ -241,21 +243,18 @@ export default class extends React.Component {
     if (type === "big") {
       target = bigCircles[key];
     } else {
-      target = Object.values(this.state.bus[key])[0][index]["circle"];
+      if (type === "bus") {
+        target = Object.values(this.state.bus[key])[0][index]["circle"];
+      } else {
+        target = Object.values(this.state.subway[key])[0][index]["circle"];
+      }
     }
-    if (type === "bus") {
-      kakao.maps.event.trigger(
-        target,
-        e.type,
-        e.type === "click" ? "trigger" : null
-      );
-    } else {
-      kakao.maps.event.trigger(
-        target,
-        e.type,
-        e.type === "click" ? "trigger" : null
-      );
-    }
+
+    kakao.maps.event.trigger(
+      target,
+      e.type,
+      e.type === "click" ? "trigger" : null
+    );
   };
 
   render() {
