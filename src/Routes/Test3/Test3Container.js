@@ -121,19 +121,14 @@ export default class extends React.Component {
         console.log(e);
       });
     var circleColor = "red";
-    var fillColor = "#ffcccb";
     if (this.state.type === "temp2") {
       circleColor = "orange";
-      fillColor = "#fed8b1";
     } else if (this.state.type === "temp3") {
       circleColor = "yellow";
-      fillColor = "#ffff66";
     } else if (this.state.type === "temp4") {
       circleColor = "green";
-      fillColor = "lightgreen";
     } else if (this.state.type === "temp5") {
       circleColor = "blue";
-      fillColor = "skyblue";
     }
     var circle = new kakao.maps.Circle({
       center: center, // 원의 중심좌표 입니다

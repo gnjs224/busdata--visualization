@@ -115,15 +115,17 @@ export default class extends React.Component {
       hoverColor = "#2d8dfa";
       text1 = "하행";
     }
+
     var circle = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(data["LOC_X"], data["LOC_Y"]), // 원의 중심좌표 입니다
       radius: circleSize, // 미터 단위의 원의 반지름입니다
-      strokeWeight: 1, // 선의 두께입니다
+      strokeWeight: 2, // 선의 두께입니다
       strokeColor: "white", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
       fillColor: circleColor, // 채우기 색깔입니다
       fillOpacity: 0.7, // 채우기 불투명도 입니다
+      zIndex: 1 / circleSize,
     });
 
     kakao.maps.event.addListener(circle, "mouseover", function (mouseEvent) {
@@ -133,6 +135,7 @@ export default class extends React.Component {
       circle.setOptions({ fillColor: circleColor });
     });
     kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
+      console.log(circle.getZIndex(), 1 / 50);
       var content =
         "<div style='text-align: left; width: 130%; padding:10px;'> 정류장 번호: " +
         data.BUS_ARS_NO +
