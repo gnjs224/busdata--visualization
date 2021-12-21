@@ -57,17 +57,26 @@ const Test2Presenter = (props) => {
       <Header type={2} />
       <br />
       <br />
-      <div style={{ textAlign: "center", marginBottom: "10px" }}>
-        <span style={{ fontSize: "13px" }}>검색어: </span>
-        <input
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              props.setMap(e.target.value);
-            }
+      <div style={{ width: "20%", float: "left", color: "white" }}>.</div>
+      <div style={{ width: "80%", textAlign: "center" }}>
+        <div style={{ float: "left" }}>
+          <span style={{ fontSize: "20px" }}>검색어: </span>
+          <input
+            style={{ height: "2rem", fontSize: "1.5rem" }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                props.setMap(e.target.value);
+              }
+            }}
+          ></input>
+        </div>
+        <div
+          style={{
+            margin: "15px",
+            height: "10%",
+            fontSize: "20px",
           }}
-          style={{ marginLeft: "3px" }}
-        ></input>
-        <div style={{ margin: "15px", height: "10%", fontSize: "20px" }}>
+        >
           잠재 고객: {props.sum.toLocaleString("ko-KR")}명
         </div>
       </div>

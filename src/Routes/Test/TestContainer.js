@@ -66,7 +66,6 @@ export default class extends React.Component {
             ? data.length - 1
             : size[this.state.bus][2];
         if (size[this.state.bus] !== undefined) {
-          console.log(this.state.bus);
           if (this.state.route === "ASC") {
             off = size[this.state.bus][1];
           } else if (this.state.route === "DESC") {
@@ -107,9 +106,11 @@ export default class extends React.Component {
     var hoverColor = "#fa752d";
     var text1 = "상행";
     if (size[this.state.bus] === undefined) {
-      circleColor = "green";
-      hoverColor = "lightgreen";
-      text1 = "";
+      if (parseInt(this.state.bus[4]) < 4) {
+        circleColor = "blue";
+        hoverColor = "#2d8dfa";
+        text1 = "하행";
+      }
     } else if (data["SEQ"] > size[this.state.bus][1] + 1) {
       circleColor = "blue";
       hoverColor = "#2d8dfa";
@@ -130,12 +131,13 @@ export default class extends React.Component {
 
     kakao.maps.event.addListener(circle, "mouseover", function (mouseEvent) {
       circle.setOptions({ fillColor: hoverColor });
+      map.setCursor("pointer");
     });
     kakao.maps.event.addListener(circle, "mouseout", function () {
       circle.setOptions({ fillColor: circleColor });
+      map.setCursor("grab");
     });
     kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
-      console.log(circle.getZIndex(), 1 / 50);
       var content =
         "<div style='text-align: left; width: 130%; padding:10px;'> 정류장 번호: " +
         data.BUS_ARS_NO +

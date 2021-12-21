@@ -36,6 +36,7 @@ export default class extends React.Component {
 
       // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
       if (!drawingFlag) {
+        map.setCursor("move");
         while (circles.length !== 0) {
           circles.pop().setMap(null);
         }
@@ -70,6 +71,7 @@ export default class extends React.Component {
         });
         displayCircleDot(clickPosition, 0);
       } else {
+        map.setCursor("grab");
         // 선이 그려지고 있는 상태이면
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
         var path = clickLine.getPath();
@@ -252,9 +254,11 @@ export default class extends React.Component {
           });
           kakao.maps.event.addListener(circle, "mouseover", function () {
             circle.setOptions({ fillColor: "green" });
+            map.setCursor("pointer");
           });
           kakao.maps.event.addListener(circle, "mouseout", function () {
             circle.setOptions({ fillColor: "lightgreen" });
+            map.setCursor("grab");
           });
           kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
             var content =
@@ -305,9 +309,11 @@ export default class extends React.Component {
     });
     kakao.maps.event.addListener(c, "mouseover", function () {
       c.setOptions({ fillOpacity: 0.5 });
+      map.setCursor("pointer");
     });
     kakao.maps.event.addListener(c, "mouseout", function () {
       c.setOptions({ fillOpacity: 0.1 });
+      map.setCursor("grab");
     });
     kakao.maps.event.addListener(c, "click", function (mouseEvent) {
       var content =
