@@ -15,7 +15,7 @@ export default class extends React.Component {
     console.log("didmount");
     var container = document.getElementById("map");
     var options = {
-      center: new kakao.maps.LatLng(37.541, 126.986),
+      center: new kakao.maps.LatLng(37.5416974, 127.017278),
       level: 8,
     };
     // eslint-disable-next-line
