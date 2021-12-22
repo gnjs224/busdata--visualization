@@ -77,7 +77,7 @@ const Test2Presenter = (props) => {
             fontSize: "20px",
           }}
         >
-          잠재 고객: {props.sum.toLocaleString("ko-KR")}명
+          잠재 고객: {(props.sum * 10).toLocaleString("ko-KR")}명
         </div>
       </div>
       <div style={{ height: "85.5vh", textAlign: "center" }}>

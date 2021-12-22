@@ -151,7 +151,7 @@ const Test3Presenter = (props) => {
 
           <Main style={{ margin: "15px", fontSize: "20px" }}>
             <div>주요 역: {props.bus.length}개</div>
-            <div>잠재 고객: {props.sum.toLocaleString("ko-KR")}명</div>
+            <div>잠재 고객: {(props.sum * 10).toLocaleString("ko-KR")}명</div>
           </Main>
 
           <Right style={{ fontSize: "10px" }}>

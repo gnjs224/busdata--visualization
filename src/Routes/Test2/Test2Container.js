@@ -267,7 +267,7 @@ export default class extends React.Component {
               "<br>버스: " +
               bus.length +
               "<br><br> <span class = 'title'> 잠재고객 수 </span><br>" +
-              sum.toLocaleString("ko-KR") +
+              (sum * 10).toLocaleString("ko-KR") +
               "</div>";
             infowindow.setContent(content);
             if (mouseEvent === "trigger") {

@@ -7,15 +7,8 @@ var map;
 var circles = [];
 var bigCircles = [];
 var infowindow = new kakao.maps.InfoWindow({ removable: true });
-var color1 = "#4d0000";
-var color2 = "#800000";
-var color3 = "#b30000";
-var color4 = "#e60000";
-var color5 = "#ff1a1a";
-var color6 = "#ff4d4d";
-var color7 = "#ff8080";
-var color8 = "#ffb3b3";
-var color9 = "#ffe6e6";
+var color1, color2, color3, color4, color5, color6, color7, color8, color9;
+
 // eslint-disable-next-line
 export default class extends React.Component {
   constructor(props) {
@@ -130,8 +123,17 @@ export default class extends React.Component {
         console.log(e);
       });
     var circleColor = "";
-
-    if (this.state.type === "temp2") {
+    if (this.state.type === "temp1") {
+      color1 = "#4d0000";
+      color2 = "#800000";
+      color3 = "#b30000";
+      color4 = "#e60000";
+      color5 = "#ff1a1a";
+      color6 = "#ff4d4d";
+      color7 = "#ff8080";
+      color8 = "#ffb3b3";
+      color9 = "#ffe6e6";
+    } else if (this.state.type === "temp2") {
       color1 = "#4d1f00";
       color2 = "#803300";
       color3 = "#b34700";
@@ -234,7 +236,7 @@ export default class extends React.Component {
         "<br>버스: " +
         tempBus[key].length +
         "<br><br> <span class = 'title'> 잠재고객 수 </span><br>" +
-        tempSum.toLocaleString("ko-KR") +
+        (tempSum * 10).toLocaleString("ko-KR") +
         "</div>";
       infowindow.setContent(content);
       if (mouseEvent === "trigger") {
