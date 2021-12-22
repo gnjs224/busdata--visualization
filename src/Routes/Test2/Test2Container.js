@@ -36,7 +36,7 @@ export default class extends React.Component {
 
       // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
       if (!drawingFlag) {
-        map.setCursor("move");
+        map.setCursor("none");
         while (circles.length !== 0) {
           circles.pop().setMap(null);
         }
