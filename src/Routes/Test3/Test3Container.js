@@ -7,13 +7,13 @@ var map;
 var circles = [];
 var bigCircles = [];
 var infowindow = new kakao.maps.InfoWindow({ removable: true });
-var color1, color2, color3, color4, color5, color6, color7, color8, color9;
-
+var color1, color2, color3, color4, color5;
+var max;
 // eslint-disable-next-line
 export default class extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { subway: [], bus: [], sum: 0, r: 0, type: "" };
+    this.state = { subway: [], bus: [], sum: 0, r: 0, type: "", colors: [] };
   }
   componentDidMount() {
     console.log("didmount");
@@ -53,6 +53,7 @@ export default class extends React.Component {
     var sum = 0;
     var bus = [];
     var subway = [];
+    max = 0;
     for (var i = 0; i < big.length; i++) {
       var result = await this.addBig(big[i]);
       // console.log(result);
@@ -66,8 +67,76 @@ export default class extends React.Component {
       subway: subway,
       sum: sum,
     });
-    // console.log(big);
+    //setColor
+    await this.setColor();
   }
+  async setColor() {
+    for (const i in bigCircles) {
+      var circleColor = "";
+      if (this.state.type === "temp1") {
+        color1 = "#ffe6e6";
+        color2 = "#ff6666";
+        color3 = "#ff0000";
+        color4 = "#990000";
+        color5 = "#4d0000";
+      } else if (this.state.type === "temp2") {
+        color1 = "#fff2e6";
+        color2 = "#ffbf80";
+        color3 = "#ff9933";
+        color4 = "#b35900";
+        color5 = "#663300";
+      } else if (this.state.type === "temp3") {
+        color1 = "#ffffe6";
+        color2 = "#ffff66";
+        color3 = "#ffff00";
+        color4 = "#999900";
+        color5 = "#4d4d00";
+      } else if (this.state.type === "temp4") {
+        color1 = "#ccffcc";
+        color2 = "#66ff66";
+        color3 = "#00ff00";
+        color4 = "#009900";
+        color5 = "#004d00";
+      } else if (this.state.type === "temp5") {
+        color1 = "#e6e6ff";
+        color2 = "#8080ff";
+        color3 = "#0000ff";
+        color4 = "#000099";
+        color5 = "#00004d";
+      }
+      this.setState({ colors: [color1, color2, color3, color4, color5] });
+      switch (parseInt((-bigCircles[i].getZIndex() * 10) / max)) {
+        case 0:
+        case 1:
+        case 2:
+          circleColor = color1;
+          break;
+        case 3:
+        case 4:
+          circleColor = color2;
+          break;
+        case 5:
+        case 6:
+          circleColor = color3;
+          break;
+        case 7:
+        case 8:
+          circleColor = color4;
+          break;
+        case 9:
+        case 10:
+          circleColor = color5;
+          break;
+        default:
+          circleColor = color1;
+          break;
+      }
+      bigCircles[i].setOptions({ fillColor: circleColor });
+    }
+  }
+  getColors = () => {
+    return this.state.colors;
+  };
   async addBig(big) {
     const center = new kakao.maps.LatLng(big["LOC_X"], big["LOC_Y"]);
 
@@ -87,13 +156,11 @@ export default class extends React.Component {
         for (var i = 0; i < data.length; i++) {
           const locX = data[i]["LOC_X"];
           const locY = data[i]["LOC_Y"];
-          const pCount = data[i]["P_COUNT"];
+          const pCount = data[i]["pCount"];
           const stnId = data[i]["STN_ID"];
           const stnNm = data[i]["STN_NM"];
           const arsNo = data[i]["ARS_NO"];
           const c = this.addSmall(locX, locY, pCount, stnNm, arsNo, stnId);
-
-          tempSum += pCount;
           if (stnId.length === 4) {
             tempSubway[key].push({
               stnNm: stnNm,
@@ -122,90 +189,24 @@ export default class extends React.Component {
       .catch((e) => {
         console.log(e);
       });
-    var circleColor = "";
-    if (this.state.type === "temp1") {
-      color1 = "#4d0000";
-      color2 = "#800000";
-      color3 = "#b30000";
-      color4 = "#e60000";
-      color5 = "#ff1a1a";
-      color6 = "#ff4d4d";
-      color7 = "#ff8080";
-      color8 = "#ffb3b3";
-      color9 = "#ffe6e6";
-    } else if (this.state.type === "temp2") {
-      color1 = "#4d1f00";
-      color2 = "#803300";
-      color3 = "#b34700";
-      color4 = "#e65c00";
-      color5 = "#ff751a";
-      color6 = "#ff944d";
-      color7 = "#ffb380";
-      color8 = "#ffd1b3";
-      color9 = "#fff0e6";
-    } else if (this.state.type === "temp3") {
-      color1 = "#4d4d00";
-      color2 = "#808000";
-      color3 = "#b3b300";
-      color4 = "#e6e600";
-      color5 = "#ffff1a";
-      color6 = "#ffff4d";
-      color7 = "#ffff80";
-      color8 = "#ffffb3";
-      color9 = "#ffffe6";
-    } else if (this.state.type === "temp4") {
-      color1 = "#004d00";
-      color2 = "#008000";
-      color3 = "#00b300";
-      color4 = "#00e600";
-      color5 = "#1aff1a";
-      color6 = "#4dff4d";
-      color7 = "#80ff80";
-      color8 = "#b3ffb3";
-      color9 = "#e6ffe6";
-    } else if (this.state.type === "temp5") {
-      color1 = "#00004d";
-      color2 = "#000080";
-      color3 = "#0000b3";
-      color4 = "#0000e6";
-      color5 = "#1a1aff";
-      color6 = "#4d4dff";
-      color7 = "#8080ff";
-      color8 = "#b3b3ff";
-      color9 = "#e6e6ff";
-    }
-    switch (parseInt(tempSum / 2000)) {
-      case 0:
-        circleColor = color9;
-        break;
-      case 1:
-        circleColor = color8;
-        break;
-      case 2:
-        circleColor = color7;
-        break;
-      case 3:
-        circleColor = color6;
-        break;
-      case 4:
-        circleColor = color5;
-        break;
-      case 5:
-        circleColor = color4;
-        break;
-      case 6:
-        circleColor = color3;
-        break;
-      case 7:
-        circleColor = color2;
-        break;
-      case 8:
-        circleColor = color1;
-        break;
-      default:
-        circleColor = color1;
-        break;
-    }
+    await axios
+      .get(
+        "/customer/" + big["LOC_X"] + "/" + big["LOC_Y"] + "/" + this.state.r
+      )
+      .then((res) => {
+        const set = new Set();
+        const data = res.data.products;
+        for (var d in data) {
+          set.add(data[d]["TRCR_NO"]);
+        }
+        tempSum = set.size;
+        max = Math.max(max, tempSum);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    //max구해서 max에 대한 1/9
+
     // const fill = 0.1;
     var circle = new kakao.maps.Circle({
       center: center, // 원의 중심좌표 입니다
@@ -214,9 +215,9 @@ export default class extends React.Component {
       strokeColor: "white", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
-      fillColor: circleColor, // 채우기 색깔입니다
+      fillColor: "black", // 채우기 색깔입니다
       fillOpacity: 1, // 채우기 불투명도 입니다
-      zIndex: 0,
+      zIndex: -tempSum,
     });
 
     kakao.maps.event.addListener(circle, "mouseover", function () {
@@ -253,7 +254,7 @@ export default class extends React.Component {
   addSmall = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 20, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 3, // 미터 단위의 원의 반지름입니다
       strokeWeight: 2, // 선의 두께입니다
       strokeColor: "aqua", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
@@ -309,7 +310,9 @@ export default class extends React.Component {
       this.setState({ r: Number(e.target.value) });
     }
   };
-
+  getMax = () => {
+    return max * 10;
+  };
   listEventHandler = (e) => {
     const index = e.target.dataset.i;
     const type = e.target.dataset.type;
@@ -331,19 +334,7 @@ export default class extends React.Component {
       e.type === "click" ? "trigger" : null
     );
   };
-  getColors = () => {
-    return [
-      color1,
-      color2,
-      color3,
-      color4,
-      color5,
-      color6,
-      color7,
-      color8,
-      color9,
-    ];
-  };
+
   render() {
     const { subway, bus, sum } = this.state;
     return (
@@ -359,6 +350,7 @@ export default class extends React.Component {
         listOver={this.listOver}
         listEventHandler={this.listEventHandler}
         getColors={this.getColors}
+        getMax={this.getMax}
       />
     );
   }

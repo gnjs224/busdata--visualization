@@ -25,7 +25,25 @@ app.get("/around/:latitude/:longitude/:distance", (req, res) => {
   var sql = `select *
   from
   (SELECT *,( 6371 * acos( cos( radians( ? ) ) * cos( radians( LOC_X) ) * cos( radians( LOC_Y ) - radians(?) ) + sin( radians(?) ) * sin( radians(LOC_X) ) ) ) AS distance
-  FROM POI19_5_7TEMP3) a
+  FROM pCountByArsNo) a
+  where a.distance<=?`;
+  db.query(
+    sql,
+    [latitude, longitude, latitude, distance / 1000],
+    (err, data) => {
+      if (!err) res.send({ products: data });
+      else res.send(err);
+    }
+  );
+});
+app.get("/customer/:latitude/:longitude/:distance", (req, res) => {
+  var latitude = req.params.latitude;
+  var longitude = req.params.longitude;
+  var distance = req.params.distance;
+  var sql = `select TRCR_NO
+  from
+  (SELECT *,( 6371 * acos( cos( radians( ? ) ) * cos( radians( LOC_X) ) * cos( radians( LOC_Y ) - radians(?) ) + sin( radians(?) ) * sin( radians(LOC_X) ) ) ) AS distance
+  FROM TBRLZM010_201907_TBA_USER_22_4_INFO2) a
   where a.distance<=?`;
   db.query(
     sql,

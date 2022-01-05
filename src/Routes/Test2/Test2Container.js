@@ -12,7 +12,7 @@ export default class extends React.Component {
     super(props);
     this.state = { subway: [], bus: [], sum: 0 };
   }
-  componentDidMount() {
+  async componentDidMount() {
     console.log("didmount");
     var container = document.getElementById("map");
     var options = {
@@ -209,22 +209,19 @@ export default class extends React.Component {
     const drawCircle = (center, distance) => {
       axios
         .get("/around/" + center["Ma"] + "/" + center["La"] + "/" + distance)
-        .then((res) => {
+        .then(async (res) => {
           // console.log(res.data.products);
           var data = res.data.products;
-          var sum = 0;
           var bus = [];
           var subway = [];
           for (var i = 0; i < data.length; i++) {
             const locX = data[i]["LOC_X"];
             const locY = data[i]["LOC_Y"];
-            const pCount = data[i]["P_COUNT"];
+            const pCount = data[i]["pCount"];
             const stnId = data[i]["STN_ID"];
             const stnNm = data[i]["STN_NM"];
             const arsNo = data[i]["ARS_NO"];
             const c = this.addCircle(locX, locY, pCount, stnNm, arsNo, stnId);
-
-            sum += pCount;
             if (stnId.length === 4) {
               subway.push({
                 stnNm: stnNm,
@@ -260,6 +257,25 @@ export default class extends React.Component {
             circle.setOptions({ fillColor: "lightgreen" });
             map.setCursor("grab");
           });
+          var sum = 0;
+
+          await axios
+            .get(
+              "/customer/" + center["Ma"] + "/" + center["La"] + "/" + distance
+            )
+            .then((res) => {
+              const set = new Set();
+              const data = res.data.products;
+              for (var d in data) {
+                set.add(data[d]["TRCR_NO"]);
+              }
+              sum = set.size;
+              // console.log(sum, res.data.products);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+          console.log(sum);
           kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
             var content =
               "<div class = 'window'><span class = 'title'> 주거 정류장 수</span> <br>지하철: " +
@@ -286,7 +302,9 @@ export default class extends React.Component {
           subway.sort(function (a, b) {
             return b["pCount"] - a["pCount"];
           });
+
           this.setState({ bus: bus, subway: subway, sum: sum });
+          console.log(sum, this.state.sum);
           // console.log(this.state.sum, this.state.bus, this.state.subway);
         })
         .catch((e) => {
@@ -298,7 +316,7 @@ export default class extends React.Component {
   addCircle = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 20, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 5, // 미터 단위의 원의 반지름입니다
       strokeWeight: 1, // 선의 두께입니다
       strokeColor: "purple", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다

@@ -30,14 +30,14 @@ const Right = styled.div`
   width: 410px;
 `;
 const ColorBox = styled.div`
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   background: black;
   display: inline-block;
   margin-left: 10px;
 `;
 const SmallBox = styled.div`
-  font-size: 10px;
+  font-size: 20px;
   text-align: right;
 `;
 const HomeList = (props) => {
@@ -155,41 +155,28 @@ const Test3Presenter = (props) => {
           </Main>
 
           <Right style={{ fontSize: "10px" }}>
-            <SmallBox>
-              0~2000
-              <ColorBox style={{ background: props.getColors()[8] }}></ColorBox>
+            <SmallBox style={{ fontWeight: "bold" }}>
+              기준: {props.getMax()}
             </SmallBox>
             <SmallBox>
-              2001~4000
-              <ColorBox style={{ background: props.getColors()[7] }}></ColorBox>
+              0~20%
+              <ColorBox style={{ background: props.getColors()[0] }}></ColorBox>
             </SmallBox>
             <SmallBox>
-              4001~6000
-              <ColorBox style={{ background: props.getColors()[6] }}></ColorBox>
-            </SmallBox>
-            <SmallBox>
-              6001~8000
-              <ColorBox style={{ background: props.getColors()[5] }}></ColorBox>
-            </SmallBox>
-            <SmallBox>
-              8001~10000
-              <ColorBox style={{ background: props.getColors()[4] }}></ColorBox>
-            </SmallBox>
-            <SmallBox>
-              10001~12000
-              <ColorBox style={{ background: props.getColors()[3] }}></ColorBox>
-            </SmallBox>
-            <SmallBox>
-              12001~14000
-              <ColorBox style={{ background: props.getColors()[2] }}></ColorBox>
-            </SmallBox>
-            <SmallBox>
-              14001~16000
+              20~40%
               <ColorBox style={{ background: props.getColors()[1] }}></ColorBox>
             </SmallBox>
             <SmallBox>
-              16001~
-              <ColorBox style={{ background: props.getColors()[0] }}></ColorBox>
+              40~60%
+              <ColorBox style={{ background: props.getColors()[2] }}></ColorBox>
+            </SmallBox>
+            <SmallBox>
+              60~80%
+              <ColorBox style={{ background: props.getColors()[3] }}></ColorBox>
+            </SmallBox>
+            <SmallBox>
+              80~100%
+              <ColorBox style={{ background: props.getColors()[4] }}></ColorBox>
             </SmallBox>
           </Right>
         </Nav>
