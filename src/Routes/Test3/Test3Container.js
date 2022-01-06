@@ -254,14 +254,14 @@ export default class extends React.Component {
   addSmall = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 3, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 10, // 미터 단위의 원의 반지름입니다
       strokeWeight: 2, // 선의 두께입니다
       strokeColor: "aqua", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
       strokeStyle: "solid", // 선의 스타일 입니다
       fillColor: "aqua", // 채우기 색깔입니다
       fillOpacity: 0.5, // 채우기 불투명도 입니다
-      zIndex: 1 / pCount,
+      zIndex: 1 / (pCount / 10),
     });
     kakao.maps.event.addListener(c, "mouseover", function () {
       c.setOptions({ fillOpacity: 1 });

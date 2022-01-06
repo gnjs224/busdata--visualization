@@ -270,12 +270,12 @@ export default class extends React.Component {
                 set.add(data[d]["TRCR_NO"]);
               }
               sum = set.size;
-              // console.log(sum, res.data.products);
+              console.log(sum, res.data.products);
             })
             .catch((e) => {
               console.log(e);
             });
-          console.log(sum);
+          // console.log(sum);
           kakao.maps.event.addListener(circle, "click", function (mouseEvent) {
             var content =
               "<div class = 'window'><span class = 'title'> 주거 정류장 수</span> <br>지하철: " +
@@ -304,7 +304,7 @@ export default class extends React.Component {
           });
 
           this.setState({ bus: bus, subway: subway, sum: sum });
-          console.log(sum, this.state.sum);
+          // console.log(sum, this.state.sum);
           // console.log(this.state.sum, this.state.bus, this.state.subway);
         })
         .catch((e) => {
@@ -316,7 +316,7 @@ export default class extends React.Component {
   addCircle = (locX, locY, pCount, stnNm, arsNo, stnId) => {
     var c = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(locX, locY), // 원의 중심좌표 입니다
-      radius: pCount / 5, // 미터 단위의 원의 반지름입니다
+      radius: pCount / 20, // 미터 단위의 원의 반지름입니다
       strokeWeight: 1, // 선의 두께입니다
       strokeColor: "purple", // 선의 색깔입니다
       strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다

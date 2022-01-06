@@ -47,12 +47,12 @@ export default class extends React.Component {
       this.addBig(big[i]);
       // console.log(result);
     }
-    console.log(linePath);
+    // console.log(linePath);
     if (big[0]["BUS_ROUTE_NM"] === "temp5") {
-      console.log("asd");
+      // console.log("asd");
       linePath.unshift(linePath.pop());
     }
-    console.log(linePath);
+    // console.log(linePath);
     var polyline = new kakao.maps.Polyline({
       path: linePath, // 선을 구성하는 좌표배열 입니다
       strokeWeight: 5, // 선의 두께 입니다
